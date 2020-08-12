@@ -10,7 +10,7 @@ class PlayerHistory{
 public:
     //Constructors and Destructors
     PlayerHistory(){};
-    PlayerHistory(string name, int score, string time) : player_name(name), player_score(score), player_game_time(time) {};
+    PlayerHistory(string name, int score, string time);
     ~PlayerHistory(){};
 
     //Setters and Getters
@@ -23,8 +23,11 @@ public:
     string GetPlayerGameTime();
     
 private:
-    string player_name{}; 
-    int player_score = 0;
-    string player_game_time{};
+    string player_name{};
+    //Struct holding the score and gametime of the player
+    struct stats{
+        int _score = 0;
+        string _game_time{};
+    }player;
 };
 #endif

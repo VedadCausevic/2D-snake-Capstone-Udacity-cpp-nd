@@ -1,6 +1,13 @@
 #include <ctime>
 #include "Player_History.h"
 
+//Constructor Definition
+PlayerHistory::PlayerHistory(string name, int score, string time){
+    this->player_name = name;
+    this->player._score = score;
+    this->player._game_time = time;
+}
+
 // Definitions of setters and Getters
 void PlayerHistory::SetPlayerName(string name){
     cout << "Player Name: ";
@@ -10,7 +17,7 @@ void PlayerHistory::SetPlayerName(string name){
 
 void PlayerHistory::SetPlayerScore(int score){
     cout << "Player Score: ";
-    this->player_score = score;
+    this->player._score = score;
 }
 
 void PlayerHistory::SetPlayerGameTime(){
@@ -18,10 +25,10 @@ void PlayerHistory::SetPlayerGameTime(){
     time_t now = time(0);
     //convert to char
     char* dt = ctime(&now);
-    player_game_time = dt;
-    cout << "Game Time: " << player_game_time;
+    player._game_time = dt;
+    cout << "Game Time: " << player._game_time;
 }
 
 string PlayerHistory::GetPlayerName(){ return player_name; }
-int PlayerHistory::GetPlayerScore(){ return player_score; }
-string PlayerHistory::GetPlayerGameTime(){ return player_game_time; }
+int PlayerHistory::GetPlayerScore(){ return player._score; }
+string PlayerHistory::GetPlayerGameTime(){ return player._game_time; }
