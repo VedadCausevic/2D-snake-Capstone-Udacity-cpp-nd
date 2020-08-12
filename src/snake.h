@@ -4,6 +4,8 @@
 #include <vector>
 #include "SDL.h"
 
+using namespace std;
+
 class Snake {
  public:
   enum class Direction { kUp, kDown, kLeft, kRight };
@@ -26,7 +28,7 @@ class Snake {
   bool alive{true};
   float head_x;
   float head_y;
-  std::vector<SDL_Point> body;
+  vector<SDL_Point> body;
 
  private:
   void UpdateHead();
