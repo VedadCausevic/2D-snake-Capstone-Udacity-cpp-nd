@@ -51,13 +51,10 @@ Player& Player::operator= (Player &&source) {
 
 // Definitions of setters and Getters
 void Player::SetPlayerName(string name){
-    cout << "Player Name: ";
-    cin >> name;
     this->player_name = name;
 }
 
 void Player::SetPlayerScore(int score){
-    cout << "Player Score: ";
     this->player._score = score;
 }
 
@@ -66,8 +63,7 @@ void Player::SetPlayerGameTime(){
     time_t now = time(0);
     //convert to char
     char* dt = ctime(&now);
-    player._game_time = dt;
-    cout << "Game Time: " << player._game_time;
+    this->player._game_time = dt;
 }
 
 string Player::GetPlayerName()const{ return player_name; }
