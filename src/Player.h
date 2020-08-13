@@ -2,7 +2,6 @@
 #define PLAYER_H
 
 #include <bits/stdc++.h>
-#include <fstream>
 
 using namespace std;
 
@@ -10,7 +9,7 @@ class Player{
 public:
     //Constructors and Destructors
     Player(){};
-    Player(string name, int score, string time);
+    Player(string name, int score, int time);
     ~Player(){};
     //Copy Semantics
         Player(const Player &source);
@@ -21,11 +20,11 @@ public:
     //Setters
         void SetPlayerName(string name);
         void SetPlayerScore(int score);
-        void SetPlayerGameTime();
+        void SetPlayerGameTime(int game_time);
     //Getters
         string GetPlayerName() const;
         int GetPlayerScore() const;
-        string GetPlayerGameTime() const;
+        int GetPlayerGameTime() const;
     //Overloading the (<) operator for players socres comparison
     bool operator<(const Player &data); 
 
@@ -33,8 +32,7 @@ private:
     string player_name;
     //Struct holding the score and gametime of the player
     struct stats{
-        int _score;
-        string _game_time;
+        int _score, _game_time;
     }player;
 };
 #endif

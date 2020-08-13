@@ -2,7 +2,7 @@
 #include "Player.h"
 
 //Constructor Definition
-Player::Player(string name, int score, string time){
+Player::Player(string name, int score, int time){
     this->player_name = name;
     this->player._score = score;
     this->player._game_time = time;
@@ -32,7 +32,7 @@ Player::Player (Player &&source) {
     // delete original data
     source.player_name = "Dummy";
     source.player._score = 0;
-    source.player._game_time = "Dummy";
+    source.player._game_time = 0;
 }
 // Move assignment operator overloading
 Player& Player::operator= (Player &&source) {
@@ -45,7 +45,7 @@ Player& Player::operator= (Player &&source) {
     // delete original data
     source.player_name = "Dummy";
     source.player._score = 0;
-    source.player._game_time = "Dummy";
+    source.player._game_time = 0;
     return *this;
 }
 
@@ -58,17 +58,15 @@ void Player::SetPlayerScore(int score){
     this->player._score = score;
 }
 
-void Player::SetPlayerGameTime(){
+void Player::SetPlayerGameTime(int game_time){
     //current date/time on local machine
-    time_t now = time(0);
-    //convert to char
-    char* dt = ctime(&now);
-    this->player._game_time = dt;
+    game_time = time(0);
+    this->player._game_time = game_time;
 }
 
 string Player::GetPlayerName()const{ return player_name; }
 int Player::GetPlayerScore()const{ return player._score; }
-string Player::GetPlayerGameTime()const{ return player._game_time; }
+int Player::GetPlayerGameTime()const{ return player._game_time; }
 
 //Overloading the (<) operator
 bool Player::operator<(const Player &data){
