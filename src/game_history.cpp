@@ -56,6 +56,9 @@ ordered_history = this->SortHistory(ordered_history);
         for(auto i : ordered_history){
             cout << count << ". " << i->GetPlayerName() << ", Score: " << i->GetPlayerScore() << ", Duration: " << i->GetPlayerGameTime() << " seconds\n";
             count++;
+            if(count > 5){
+                break;
+            }
         }
     }
     else{
