@@ -1,7 +1,7 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include <vector>
+#include <bits/stdc++.h>
 #include "SDL.h"
 #include "snake.h"
 
@@ -13,8 +13,8 @@ class Renderer {
            const size_t grid_width, const size_t grid_height);
   ~Renderer();
 
-  void Render(Snake const snake, SDL_Point const &food);
-  void UpdateWindowTitle(int score, int fps);
+  void Render(Snake const snake, SDL_Point const &food, SDL_Point const &power_slow);
+  void UpdateWindowTitle(int score, int fps, float speed);
 
  private:
   SDL_Window *sdl_window;

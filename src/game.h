@@ -16,10 +16,13 @@ class Game {
            size_t target_frame_duration);
   int GetScore() const;
   int GetSize() const;
-
+  bool PowerSlowCell(int x, int y);
+  bool FoodCell(int x, int y);
+  
  private:
   Snake snake;
   SDL_Point food;
+  SDL_Point power_slow;
 
   random_device dev;
   mt19937 engine;
@@ -30,6 +33,7 @@ class Game {
 
   void PlaceFood();
   void Update();
+  void PlacePowerSlow();
 };
 
 #endif

@@ -1,6 +1,8 @@
 #include "game.h"
-#include <iostream>
+#include <bits/stdc++.h>
 #include "SDL.h"
+#include <mutex>
+#include <thread>
 
 Game::Game(size_t grid_width, size_t grid_height)
     : snake(grid_width, grid_height),
@@ -8,6 +10,21 @@ Game::Game(size_t grid_width, size_t grid_height)
       random_w(0, static_cast<int>(grid_width)),
       random_h(0, static_cast<int>(grid_height)) {
   PlaceFood();
+  PlacePowerSlow();
+}
+
+bool Game::FoodCell(int x, int y){
+  if(x == food.x && y == food.y){
+    return true;
+  }
+  return false;
+}
+
+bool Game::PowerSlowCell(int x, int y){
+  if(x == power_slow.x && y == power_slow.y){
+    return true;
+  }
+  return false;
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -25,7 +42,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();
-    renderer.Render(snake, food);
+    renderer.Render(snake, food, power_slow);
 
     frame_end = SDL_GetTicks();
 
@@ -36,7 +53,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     // After every second, update the window title.
     if (frame_end - title_timestamp >= 1000) {
-      renderer.UpdateWindowTitle(score, frame_count);
+      renderer.UpdateWindowTitle(score, frame_count, snake.speed);
       frame_count = 0;
       title_timestamp = frame_end;
     }
@@ -51,16 +68,30 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 }
 
 void Game::PlaceFood() {
-  int x = 0; 
-  int y = 0;
+  int x, y;
   while (true) {
     x = random_w(engine);
     y = random_h(engine);
     // Check that the location is not occupied by a snake item before placing
     // food.
-    if (!snake.SnakeCell(x, y)) {
+    if (!snake.SnakeCell(x, y) && !Game::PowerSlowCell(x, y)) {
       food.x = x;
       food.y = y;
+      return;
+    }
+  }
+}
+
+void Game::PlacePowerSlow() {
+  int x, y;
+  while (true) {
+    x = random_w(engine);
+    y = random_h(engine);
+    // Check that the location is not occupied by a snake item before placing
+    // food.
+    if (!snake.SnakeCell(x, y) && !Game::FoodCell(x, y)) {
+      power_slow.x = x;
+      power_slow.y = y;
       return;
     }
   }
@@ -81,6 +112,12 @@ void Game::Update() {
     // Grow snake and increase speed.
     snake.GrowBody();
     snake.speed += 0.02;
+  }
+
+  if (power_slow.x == new_x && power_slow.y == new_y) {
+    //decreases speed
+    snake.speed -= 0.02;
+    PlacePowerSlow();
   }
 }
 
