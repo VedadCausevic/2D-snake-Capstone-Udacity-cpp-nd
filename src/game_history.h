@@ -13,10 +13,11 @@ public:
     //Default Constructor
     History();
     //Methods
-    void SaveHistory(Player &player);
+    void SaveHistory(Player &player, int duration);
     vector<shared_ptr<Player>> ReadHistory();
     vector<shared_ptr<Player>> SortHistory(vector<shared_ptr<Player>> &v);
     void DisplayHistory();
+    void DisplayOrderedHistory();
     Player GetHighScore();
     void DisplayHighScore();
 private:

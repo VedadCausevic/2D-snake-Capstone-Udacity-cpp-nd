@@ -4,14 +4,14 @@
 History::History(){};
 
 // Methods Definition
-void History::SaveHistory(Player &player){
+void History::SaveHistory(Player &player, int duration){
     //Create Output file stream
     fstream Game_History;
     //format text file
     Game_History.open("Game_History.txt", ios::binary | ios::out | ios::app);
 
     if(Game_History.is_open()){
-        Game_History << player.GetPlayerName() << " " << player.GetPlayerScore() << " " << player.GetPlayerGameTime() << "\n";
+        Game_History << player.GetPlayerName() << " " << player.GetPlayerScore() << " " << duration << " seconds\n";
         Game_History.close();
     }
     else{
@@ -20,8 +20,8 @@ void History::SaveHistory(Player &player){
 }
 
 vector<shared_ptr<Player>> History::ReadHistory(){
-    string line, name, game_time;
-    int score;
+    string line, name;
+    int score, game_time;
     ifstream Game_History("Game_History.txt");
 
     if(Game_History.is_open()){
@@ -34,7 +34,6 @@ vector<shared_ptr<Player>> History::ReadHistory(){
             }
         }
         Game_History.close();
-        cout << "Game History is read successfully\n";
         return _history;
     }
 }
@@ -47,13 +46,30 @@ vector<shared_ptr<Player>> History::SortHistory(vector<shared_ptr<Player>> &v){
     return v;
 }
 
-void History::DisplayHistory(){
+void History::DisplayOrderedHistory(){
 auto ordered_history = _history;
 ordered_history = this->SortHistory(ordered_history);
     if(ordered_history.size() > 0){
+        cout << "\033[2J\033[1;1H";
+        cout << "/------------------ Hall of Fame -------------------/" << endl;
         int count = 1;
         for(auto i : ordered_history){
-            cout << count << ". " << i->GetPlayerName() << ", Score: " << i->GetPlayerScore() << ", GameTime: " << i->GetPlayerGameTime() << "\n";
+            cout << count << ". " << i->GetPlayerName() << ", Score: " << i->GetPlayerScore() << ", Duration: " << i->GetPlayerGameTime() << " seconds\n";
+            count++;
+        }
+    }
+    else{
+        cout << "ERROR: No data to display\n";
+    }
+}
+
+void History::DisplayHistory(){
+    if(_history.size() > 0){
+        cout << "\033[2J\033[1;1H";
+        cout << "/------------------ Game History -------------------/" << endl;
+        int count = 1;
+        for(auto i : _history){
+            cout << count << ". " << i->GetPlayerName() << ", Score: " << i->GetPlayerScore() << ", Duration: " << i->GetPlayerGameTime() << endl;
             count++;
         }
     }
@@ -72,5 +88,7 @@ Player History::GetHighScore(){
 
 void History::DisplayHighScore(){
     auto high_score = this->GetHighScore();
-    cout << "Highest Score Player: " << high_score.GetPlayerName() << ", Score: " << high_score.GetPlayerScore() << ", GameTime: " << high_score.GetPlayerGameTime() << ". \n";
+    cout << "\033[2J\033[1;1H";
+    cout << "/------------------ Highest Score Player -------------------/" << endl;
+    cout << high_score.GetPlayerName() << ", Score: " << high_score.GetPlayerScore() << ", Duration: " << high_score.GetPlayerGameTime() << " seconds\n";
 }
