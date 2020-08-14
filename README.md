@@ -32,10 +32,7 @@ In this project, you can build your own C++ application or extend this Snake gam
 ## Functionalities added to the project
 The modifications added to the starter code are summarized into three parts as follows:
 
-1. Creating a history for the snake game with the following options:
-    a) `Game History` that displays the entire game history
-    b) `Hall of Fame` that displays the top 5 scores
-    c) `Highest Score Player` that displays the highest scorer of all time.
+1. Creating a history for the snake game with the following options: a) `Game History`, b) `Hall of Fame`, c) `Highest Score Player`.
 
 2. Creating a main menu to the snake game using `game_menu.cpp` & `game_menu.h` to navigate between playing the game and the game history 
 
