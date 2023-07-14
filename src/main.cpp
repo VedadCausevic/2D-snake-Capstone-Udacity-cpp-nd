@@ -1,9 +1,9 @@
 #include "controller.h"
 #include "game.h"
 #include "renderer.h"
-#include "game_history.h"
+#include "data.h"
 #include "Player.h"
-#include "game_menu.h"
+#include "interface.h"
 
 int main() {
   constexpr size_t kFramesPerSecond{60};
@@ -13,27 +13,28 @@ int main() {
   constexpr size_t kGridWidth{32};
   constexpr size_t kGridHeight{32};
 
-  Menu menu;
+  Interface interface;
   Player player;
-  History history;
+  Data data;
   string player_name;
-  int gametime, duration, first, last;
-  menu.MainMenu();
-  int mode = menu.Input_number();
-  if (mode == menu.kPlay){
-    menu.GetPlayerName();
-    player_name = menu.Input_string();
-    player.SetPlayerName(player_name);
-    player.SetPlayerGameTime(gametime);
-    first = player.GetPlayerGameTime();
+  int player_age;
+  int gametime, duration, start, end;
+  interface.IntroMessage();
+  interface.AskForName();
+  player_name = interface.Enter_Name();
+  interface.AskForAge();
+  player_age = interface.Enter_Age();
+  player.SetPlayerName(player_name);
+  player.SetPlayerAge(player_age);
+  player.SetPlayerGameTime(gametime);
+    start = player.GetPlayerGameTime();
     Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
     Controller controller;
     Game game(kGridWidth, kGridHeight);
     game.Run(controller, renderer, kMsPerFrame);
     player.SetPlayerGameTime(gametime);
-    last = player.GetPlayerGameTime();
-    duration = last - first;
-    cout << "\033[2J\033[1;1H";
+    end = player.GetPlayerGameTime();
+    duration = end - start;
     cout << "Game has terminated successfully!\n";
     cout << "Player: " << player.GetPlayerName() << "\n";
     cout << "Score: " << game.GetScore() << "\n";
@@ -41,24 +42,6 @@ int main() {
     cout << "Size: " << game.GetSize() << "\n";
     player.SetPlayerScore(game.GetScore());
     player.GetPlayerGameTime();
-    history.SaveHistory(player, duration);
-  }
-  else if(mode == menu.kHistory){
-    auto player_history = history.ReadHistory();
-    if(!(player_history.size() > 0)){
-      cout << "No Previous Data Stored!\n";
-    }
-    menu.HistoryMenu();
-    mode = menu.Input_number();
-    if(mode == menu.kUnordered_History){
-      history.DisplayHistory();
-    }
-    else if(mode == menu.kOrdered_History){
-      history.DisplayOrderedHistory();
-    }
-    else if(mode == menu.kHighest_Score){
-      history.DisplayHighScore();
-    }
-  }
+    data.SaveData(player, duration);
   return 0;
 }

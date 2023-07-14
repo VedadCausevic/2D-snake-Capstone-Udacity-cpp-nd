@@ -7,32 +7,35 @@ using namespace std;
 
 class Player{
 public:
-    //Constructors and Destructors
+    //Default Constructor
     Player(){};
-    Player(string name, int score, int time);
+  // Constructor
+    Player(string name,int age, int score, int time);
+  // Destructor
     ~Player(){};
-    //Copy Semantics
-        Player(const Player &source);
-        Player &operator=(const Player &source);
-    //Move Semantics
-        Player(Player &&source);
-        Player &operator=(Player &&source);
+    //Copy Constructor
+     Player(const Player &source);
+  //Copy assignment operator
+     Player &operator=(const Player &source);
+    //Move Constructor
+     Player(Player &&source);
+  //Move assignment operator
+     Player &operator=(Player &&source);
     //Setters
         void SetPlayerName(string name);
         void SetPlayerScore(int score);
         void SetPlayerGameTime(int game_time);
+        void SetPlayerAge(int age);
     //Getters
         string GetPlayerName() const;
+        int GetPlayerAge() const;
         int GetPlayerScore() const;
         int GetPlayerGameTime() const;
-    //Overloading the (<) operator for players socres comparison
-    bool operator<(const Player &data); 
+    
 
 private:
-    string player_name;
-    //Struct holding the score and gametime of the player
-    struct stats{
-        int _score, _game_time;
-    }player;
-};
+  string player_name;
+  int player_age;
+  int _score, _game_time;
+  };
 #endif

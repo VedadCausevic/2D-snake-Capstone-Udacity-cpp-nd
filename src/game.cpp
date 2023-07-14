@@ -10,22 +10,11 @@ Game::Game(size_t grid_width, size_t grid_height)
       random_w(0, static_cast<int>(grid_width)),
       random_h(0, static_cast<int>(grid_height)) {
   PlaceFood();
-  PlacePowerSlow();
+  PlacePoison();
 }
 
-bool Game::FoodCell(int x, int y){
-  if(x == food.x && y == food.y){
-    return true;
-  }
-  return false;
-}
 
-bool Game::PowerSlowCell(int x, int y){
-  if(x == power_slow.x && y == power_slow.y){
-    return true;
-  }
-  return false;
-}
+
 
 void Game::Run(Controller const &controller, Renderer &renderer,
                size_t target_frame_duration) {
@@ -42,7 +31,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();
-    renderer.Render(snake, food, power_slow);
+    renderer.Render(snake, food, poison);
 
     frame_end = SDL_GetTicks();
 
@@ -72,9 +61,9 @@ void Game::PlaceFood() {
   while (true) {
     x = random_w(engine);
     y = random_h(engine);
-    // Check that the location is not occupied by a snake item before placing
+    // Check that the location is not occupied by a snake or poison before placing
     // food.
-    if (!snake.SnakeCell(x, y) && !Game::PowerSlowCell(x, y)) {
+    if (!snake.SnakeCell(x, y) && (x != poison.x || y == poison.y)) {
       food.x = x;
       food.y = y;
       return;
@@ -82,16 +71,16 @@ void Game::PlaceFood() {
   }
 }
 
-void Game::PlacePowerSlow() {
+void Game::PlacePoison() {
   int x, y;
   while (true) {
     x = random_w(engine);
     y = random_h(engine);
-    // Check that the location is not occupied by a snake item before placing
-    // food.
-    if (!snake.SnakeCell(x, y) && !Game::FoodCell(x, y)) {
-      power_slow.x = x;
-      power_slow.y = y;
+    // Check that the location is not occupied by a snake  or food before placing
+    // poison.
+    if (!snake.SnakeCell(x, y) &&  (x != food.x || y == food.y)) {
+      poison.x = x;
+      poison.y = y;
       return;
     }
   }
@@ -114,10 +103,9 @@ void Game::Update() {
     snake.speed += 0.02;
   }
 
-  if (power_slow.x == new_x && power_slow.y == new_y) {
+  if (poison.x == new_x && poison.y == new_y) {
     //decreases speed
-    snake.speed -= 0.02;
-    PlacePowerSlow();
+     PlacePoison();
   }
 }
 

@@ -1,9 +1,5 @@
 # CPPND: Capstone 2D Snake Game 
 
-This is a repo for the Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213).
-
-<img src="snake_game.gif"/>
-
 The Capstone Project gives you a chance to integrate what you've learned throughout this program. This project will become an important part of your portfolio to share with current and future colleagues and employers.
 
 In this project, you can build your own C++ application or extend this Snake game, following the principles you have learned throughout this Nanodegree Program. This project will demonstrate that you can independently create applications using a wide range of C++ features.
@@ -32,11 +28,12 @@ In this project, you can build your own C++ application or extend this Snake gam
 ## Functionalities added to the project
 The modifications added to the starter code are summarized into three parts as follows:
 
-1. Creating a history for the snake game with the following options: a) `Game History`, b) `Hall of Fame`, c) `Highest Score Player`.
-
-2. Creating a main menu to the snake game using `game_menu.cpp` & `game_menu.h` to navigate between playing the game and the game history 
-
-3. Adding a `slow` power up in the game which is a green block that slows down the snake by the same amount it gains from the food.
+1. Creating an interface for the snake game.
+2. Storing the data about player and results of game in the output text file
+3. Change in the rules of the game as following:
+- Added another type of food - so called poison marked with randomly placed green cell
+- When snake eats poison it makes her weaker i.e. it slowes her down (if she eats sufficient poison she dies i.e. her speed will go to zero)
+- When snake eats normal food her body gets bigger but the speed remains the same as snake also gets heavier
 
 ## Code Structure:
 THe Added code to the project covers most of the content discussed in the C++ NanoDegree and are summarized in three main classes:
@@ -44,40 +41,37 @@ THe Added code to the project covers most of the content discussed in the C++ Na
 ### Player Class in Player.h:
     - Creates a profile for the new player which contains the following data:
         1. Name
-        2. Score
+        2. Age
+        3. Score
         3. Game Duration
     - The class has or utilizes the following:
         * Setters/Getters
         * list intializers.
         * rule of five.
-        * operator overloading.
         * Encapsulation & Abstraction.    
-### History Class in game_history.h:
-    - Creates a History for the game and stores it in `Game_History.txt`.
-    - The data stored are the player's name, score, and the duration of the game that was played.
-    - The History class can display the history in three different modes:
-       * Displays the entire game history by the last player played that played the game.
-       * Displays a Hall of Fame that displays the top 5 players.
-       * Displays the highest scoring player of all time.
-    - The History class has or utilizes the following:
-        * Composition
-        * shared_pointers
-        * memory allocation on the heap. 
-        * move semantics. 
-        * lambda function
-### Menu Class in game_menu.h:
+### Data Class in data.h:
+    - Creates a data about the player and game and stores it in `outputstream.txt` within build folder
+    - The data stored are the player's name, players age, score, and the duration of the game that was played.
+        
+### Interface Class in interface.h:
     - Visualizes the main menu to the user. 
-    - Displays the History menu
-    - Displays the menu for the player to enter their name before playing.
-    
+    - Guides the user to provide its throughout the game
+
+### Modifications in classes Game and Renderer:
+    - function PlacePoison() places poison on a location different from snake location and food location
+    - function Update reduces speed of snake if she eats poison
+    - Poison rendering added
+    - In a toolbar added information about the speed which gets affected by eating poison
+
+
 ## Rubric Points Addressed
 
 ### Loops, Functions, I/O
 |Criteria| Addressed(Yes/No)|
 |--------|------------|
 The project demonstrates an understanding of C++ functions and control structures. == Yes, All the src files contains or consists of this rubric. |YES
-The project reads data from a file and process the data, or the program writes data to a file. == Yes, The class History in game_history.h read/write txt files. |YES
-The project accepts user input and processes the input. == Yes, this is demonstrated in the main.cpp using the Menu class in the game_menu.h to input the player's name before playing and using it in the History class to store it. |YES
+The project reads data from a file and process the data, or the program writes data to a file. == Yes, The class Data in data.h reades/writes txt files. |YES
+The project accepts user input and processes the input. == Yes, this is demonstrated in the main.cpp using the interface class in the interface.h to input the player's name and age before playing and using it in the Data class to store it. |YES
 
 ### Object Oriented Programming
 |Criteria| Addressed(Yes/No)|
@@ -94,6 +88,6 @@ Classes encapsulate behavior. == Yes, and this is represented by having all the 
 Classes abstract implementation details from their interfaces. == Yes. |YES
 The project uses destructors appropriately. == Yes, and it is shown in the Player class.|YES
 The project follows the Rule of 5. == Yes, and this is represented in the Player Class. |YES
-The project uses smart pointers instead of raw pointers. == Yes, this is described in the game_history.h file where shared pointers are used.|YES
+The project uses smart pointers instead of raw pointers. 
 The project uses move semantics to move data, instead of copying it, where possible. == Yes, the Player data moves from the source and pushed in the players vector.|YES
 The project makes use of references in function declarations. == Yes. |YES

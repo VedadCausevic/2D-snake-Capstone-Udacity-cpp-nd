@@ -13,7 +13,7 @@ class Renderer {
            const size_t grid_width, const size_t grid_height);
   ~Renderer();
 
-  void Render(Snake const snake, SDL_Point const &food, SDL_Point const &power_slow);
+  void Render(Snake const snake, SDL_Point const &food, SDL_Point const &poison);
   void UpdateWindowTitle(int score, int fps, float speed);
 
  private:
